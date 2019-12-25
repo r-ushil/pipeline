@@ -33,6 +33,7 @@ variables:
   SALSA_CI_DISABLE_APTLY: 1
   SALSA_CI_DISABLE_MISSING_BREAKS: 1
   SALSA_CI_DISABLE_RC_BUGS: 1
+  SALSA_CI_DISABLE_ARM64: 1
 
 stages:
   - build
@@ -123,6 +124,17 @@ stages:
   except:
     variables:
       - $CI_COMMIT_TAG != null && $SALSA_CI_ENABLE_PIPELINE_ON_TAGS !~ /^(1|yes|true)$/
+
+.test-build-arm64: &test-build-arm64
+  extends:
+    - .build-definition
+  stage: test
+  tags:
+    - arm64
+  except:
+    variables:
+      - $CI_COMMIT_TAG != null && $SALSA_CI_ENABLE_PIPELINE_ON_TAGS !~ /^(1|yes|true)$/
+      - $SALSA_CI_DISABLE_ARM64 =~ /^(1|yes|true)$/
 
 .test-build-package-any: &test-build-package-any
   extends:

@@ -64,6 +64,10 @@ build source:
     extends: .build-source-only
     <<: *only-in-test-pipeline
 
+test-build-arm64:
+    extends: .test-build-arm64
+    <<: *only-in-test-pipeline
+
 test-build-any:
     extends: .test-build-package-any
     <<: *only-in-test-pipeline

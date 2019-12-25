@@ -20,45 +20,58 @@ variables:
 #
 # These images build only for sid.
 #
-image:aptly:
+amd64:aptly:
   extends: .build_only_sid
 
-image:autopkgtest:
+amd64:autopkgtest:
   extends: .build_only_sid
 
-image:blhc:
+amd64:blhc:
   extends: .build_only_sid
 
-image:gbp:
+amd64:gbp:
   extends: .build_only_sid
 
-image:pipeline:
+amd64:pipeline:
   extends: .build_only_sid
 
-image:piuparts:
+amd64:piuparts:
   extends: .build_only_sid
 
-image:reprotest:
+amd64:reprotest:
   extends: .build_only_sid
 
 #
 # These images build for all the releases.
 #
-image:base:
+amd64:base:
   extends: .build_template
 
-image:dockerbuilder:
+amd64:dockerbuilder:
   extends: .build_template
 
-image:lintian:
+amd64:lintian:
   extends: .build_template
   only:
     variables:
       # Use != to avoid overriding template except.
       - $RELEASE != 'experimental'
 
-image:generic_tests:
+amd64:generic_tests:
   extends: .build_template
+
+#
+# Images for ARM jobs.
+#
+arm64:gbp:
+  extends: .build_template
+  tags:
+    - arm64
+
+arm64:dockerbuilder:
+  extends: .build_template
+  tags:
+    - arm64
 
 #
 # Trigger build of other releases.

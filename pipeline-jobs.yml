@@ -13,6 +13,9 @@ build:
 build source:
     extends: .build-source-only
 
+test-build-arm64:
+    extends: .test-build-arm64
+
 test-build-any:
     extends: .test-build-package-any
 
