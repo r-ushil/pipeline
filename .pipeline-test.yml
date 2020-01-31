@@ -7,6 +7,9 @@
 include:
  - salsa-ci.yml
 
+variables:
+    SALSA_CI_GBP_ARGS: '--break-test' 
+
 check license + contributor:
     stage: test
     image: ${SALSA_CI_IMAGES_BASE}
