@@ -24,7 +24,7 @@ BUILD_LOGFILE_ARCH=$(dpkg --print-architecture)
 
 BUILD_LOGFILE="${WORKING_DIR}/${BUILD_LOGFILE_SOURCE}_${BUILD_LOGFILE_VERSION}_${BUILD_LOGFILE_ARCH}.build"
 
-CCACHE_DIR_ENV="-e CCACHE_DIR=/tmp/ccache"
+CCACHE_DIR_ENV="CCACHE_DIR=/tmp/ccache"
 
 DEBIAN_VARENVS=""
 
@@ -47,8 +47,6 @@ eatmydata apt-get install aptitude -y
 set -o pipefail
 
 eatmydata install-build-deps.sh |& tee -a "${BUILD_LOGFILE}"
-
-eatmydata chown -R salsa-ci:100 ${GBP_BUILD_DIR}/.. /tmp/ccache
 
 ${CCACHE_DIR_ENV}  ccache -z
 
