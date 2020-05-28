@@ -42,6 +42,8 @@ apt-get install eatmydata -y
 
 eatmydata apt-get dist-upgrade -y
 
+eatmydata apt-get install aptitude -y
+
 set -o pipefail
 
 eatmydata install-build-deps.sh |& tee -a "${BUILD_LOGFILE}"
