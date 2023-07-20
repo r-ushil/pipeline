@@ -93,6 +93,8 @@ The following releases are currently supported:
 * buster-backports
 * bullseye
 * bullseye-backports
+* bookworm
+* bookworm-backports
 * stable
 * testing
 * unstable
