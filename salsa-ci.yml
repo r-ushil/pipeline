@@ -131,6 +131,10 @@ stages:
     - .artifacts-default-expire
   variables:
     DB_BUILD_PARAM: ${SALSA_CI_DPKG_BUILDPACKAGE_ARGS}
+  retry:
+    max: 1
+    when:
+      - script_failure
   script:
     - mkdir -vp ${WORKING_DIR}
 
