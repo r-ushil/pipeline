@@ -125,6 +125,12 @@ test-pipeline:
   parallel:
     matrix:
       - PROJECT_URL: https://salsa.debian.org/debian/grep
+      - PROJECT_URL: https://salsa.debian.org/debian/grep
+        SALSA_CI_ENABLE_BUILD_PACKAGE_PROFILES: 1
+        SALSA_CI_DISABLE_ALL_TESTS: 1
+        SALSA_CI_DISABLE_APTLY: 1
+        BUILD_PROFILES:
+          - nocheck,nodoc
       # boxes is used to test gbp setup-gitattributes (#322)
       - PROJECT_URL: https://salsa.debian.org/carnil/boxes
         SALSA_CI_DISABLE_GBP_SETUP_GITATTRIBUTES: 1

@@ -90,6 +90,7 @@ variables:
   SALSA_CI_DISABLE_BUILD_PACKAGE_ARMEL: 1
   SALSA_CI_DISABLE_BUILD_PACKAGE_ARMHF: 1
   SALSA_CI_DISABLE_BUILD_PACKAGE_ARM64: 1
+  SALSA_CI_DISABLE_BUILD_PACKAGE_PROFILES: 1
   SALSA_CI_DISABLE_BUILD_PACKAGE_TWICE:
     description: "Set this to 0 to enable the test that builds the package twice in a row"
     value: 1
@@ -484,6 +485,34 @@ stages:
     - if: $SALSA_CI_DISABLE_ALL_TESTS =~ /^(1|yes|true)$/
       when: never
     - if: $SALSA_CI_DISABLE_BUILD_PACKAGE_TWICE !~ /^(1|yes|true)$/
+
+.check-build-package-profiles: &check-build-package-profiles
+  - |
+    if [ -z "${BUILD_PROFILES}" ]; then
+      echo "Error: BUILD_PROFILES variable is required"
+      exit 1
+    fi
+
+.build-package-profiles-definition: &build-package-profiles-definition
+  extends:
+    - .build-definition
+  script:
+    - *check-build-package-profiles
+    - *build-before-script
+    - *build-script
+    - mv -v ${CCACHE_TMP_DIR} ${CCACHE_WORK_DIR}
+
+.test-build-package-profiles: &test-build-package-profiles
+  extends:
+    - .build-package-profiles-definition
+  stage: test
+  variables:
+    SALSA_CI_DPKG_BUILDPACKAGE_ARGS: --build-profiles="${BUILD_PROFILES}"
+  rules:
+    - if: $SALSA_CI_ENABLE_BUILD_PACKAGE_PROFILES =~ /^(1|yes|true)$/
+    - if: $SALSA_CI_DISABLE_ALL_TESTS =~ /^(1|yes|true)$/
+      when: never
+    - if: $SALSA_CI_DISABLE_BUILD_PACKAGE_PROFILES !~ /^(1|yes|true)$/
 
 .test-crossbuild-package-arm64: &test-crossbuild-package-arm64
   extends:

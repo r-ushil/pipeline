@@ -34,6 +34,9 @@ test-build-all:
 test-build-twice:
   extends: .test-build-package-twice
 
+test-build-profiles:
+  extends: .test-build-package-profiles
+
 test-crossbuild-arm64:
   extends: .test-crossbuild-package-arm64
   allow_failure: true
