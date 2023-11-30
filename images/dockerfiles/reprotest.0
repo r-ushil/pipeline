@@ -13,4 +13,4 @@ ENV PYTHONIOENCODING utf-8
 
 RUN useradd --gid 100 -m salsa-ci
 
-RUN su salsa-ci -c "reprotest --print-sudoers --variations=user_group.available+=salsa-ci,domain_host.use_sudo=1" | EDITOR=tee visudo -f /etc/sudoers.d/local-reprotest
+RUN su salsa-ci -c "reprotest --print-sudoers --vary=user_group.available+=salsa-ci,domain_host.use_sudo=1" | EDITOR=tee visudo -f /etc/sudoers.d/local-reprotest
