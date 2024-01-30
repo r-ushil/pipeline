@@ -465,6 +465,19 @@ variables:
   SALSA_CI_AUTOPKGTEST_ARGS: '--setup-commands=ci/pin-django-from-backports.sh'
 ```
 
+### Making autopkgtest more strict
+
+By default, the autopkgtest job will succeed if autopkgtest exits with status
+0, 2 or 8. If you would like the autopkgtest job to only succeed if all tests
+pass and fail otherwise, you can restrict success to exit status 0 by writing:
+
+```yaml
+variables:
+  SALSA_CI_AUTOPKGTEST_ALLOWED_EXIT_STATUS: '0'
+```
+
+To allow multiple exit codes, separate them by comma.
+
 ### Adding extra arguments to dpkg-buildpackage
 
 Sometimes it is desirable to add direct options to the dpkg-buildpackage that is run for the package building.
