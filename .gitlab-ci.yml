@@ -14,6 +14,9 @@ workflow:
 variables:
   DOCKER_TLS_CERTDIR: ""
   SALSA_CI_DISABLE_APTLY: "false"
+  SALSA_CI_PERSIST_IMAGES:
+    description: "Images are clean at the end of a pipeline of a staging branch. Set this to 1 to don't clean them"
+    value: 0
 
 stages:
   - images
