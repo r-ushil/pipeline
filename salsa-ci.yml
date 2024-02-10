@@ -325,7 +325,7 @@ stages:
 
   # Create salsaci user and fix permissions
   - useradd --create-home salsaci
-  - chown -R salsaci. ${WORKING_DIR} ${CCACHE_DIR}
+  - chown -R 'salsaci:' ${WORKING_DIR} ${CCACHE_DIR}
 
   # Define buildlog filename
   - BUILD_LOGFILE_SOURCE=$(dpkg-parsechangelog -S Source)
@@ -552,7 +552,7 @@ stages:
     - umount -R /sys/fs/cgroup && mount -a
     - /etc/init.d/lxc-net start
     - /etc/init.d/lxc start
-    - chown -R debci. ${WORKING_DIR}
+    - chown -R 'debci:' ${WORKING_DIR}
     - export debci_autopkgtest_args="${SALSA_CI_AUTOPKGTEST_ARGS}"
     # su's -P is required to have ownership over /dev/stderr, /dev/stdout and
     # /dev/stdin, and then fix #256
