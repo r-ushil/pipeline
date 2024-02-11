@@ -15,7 +15,7 @@ Proposed modifications to the Salsa CI's pipeline are done via merge requests. F
 1. After cloning, create a branch with a meaningful name. _(Your branch should be up to date with the upstream default branch.)_  For merge requests closing an issue, it is convenient to prefix the branch name with the issue's number. 
 **Note: _The branch name is used as a staging tag on the generated images. Because of this, slashes (`/`) are not allowed, otherwise, CI will fail. Avoid branch names like `something/other`._**
 
-1. Make necessary changes and commit. **Please sign every commit.** Debian relies on OpenPGP to guarantee the authenticity and integrity of contributions. If you are wondering how to sign commits, read [this condensed summary](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work).  
+1. Make necessary changes and commit. **Please sign every commit.** Debian relies on OpenPGP to guarantee the authenticity and integrity of contributions. If you are wondering how to sign commits, read [this condensed summary](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work).
 **Note:** *YAML files follow a two-space indentation. Scripts in other languages should
 follow their language-wide coding style. To check for errors in your YAML files before pushing changes, you can make use of [yamllint](https://yamllint.readthedocs.io/en/stable/quickstart.html).*
 
@@ -27,9 +27,23 @@ If your Merge Request needs testing not covered by the pipeline's CI, it is impo
 
 ### Allow images to be persistent
 
-Depending on how you have to test your Merge Request, you may want to allow images to persist. 
-By default all generated images are deleted when the MR test pipeline is finished. This is to avoid images from
-being created and stored in the registry when the project is forked.
+When triggered from staging (not the default) branches, there is a `clean
+images` job that removes the images created during the first stage (the
+`images` stage), in order to avoid consuming space in the Container Registry.
+Depending on how you have to test your Merge Request, you may want to keep those images.
 
 To disable this behavior set the `SALSA_CI_PERSIST_IMAGES` to 1, 'yes' or
 'true' on a CI variable (*CI/CD Settings*).
+
+### Avoid creating images (in staging branches)
+
+During the development process, it is possible that you would like to make
+several `git push`es. For each `git push`, all the staging images are built by
+default, and that could be time-consuming. So if you are making several changes
+and you want to save some time, you could:
+
+1. Run a pipeline keeping the images, as described just above.
+
+1. Run a second pipeline `SALSA_CI_DISABLE_BUILD_IMAGES` set to 1, 'yes' or 'true'.
+
+1. Once you are done, please remember to remove the staging images, setting `SALSA_CI_PERSIST_IMAGES` back to 0.
