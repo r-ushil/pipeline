@@ -150,7 +150,7 @@ image-staging-arm:
           - arm32v7
           - arm64v8
         RELEASE: sid
-  # While there isn't an ARM shared runner avilable, let's allow these images
+  # While there isn't an ARM shared runner available, let's allow these images
   # to fail to don't block pipelines on MRs.
   allow_failure: true
   when: manual

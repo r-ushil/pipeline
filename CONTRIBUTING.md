@@ -1,4 +1,5 @@
 The Salsa CI project is a Debian open source project and welcomes contributions such as:
+
 * Opening up new issues that address specific areas to improve the pipeline.
 * Improving the documentation e.g. by explaining concepts better or adding missing information
 * Solving open issues. Some issues have labels attached to them which have different meanings. This also means they have been triaged and it would be great to have them solved. Some labels are:
@@ -8,20 +9,23 @@ The Salsa CI project is a Debian open source project and welcomes contributions 
 
 To contribute to Salsa CI, you must have a Salsa (Debian's Gitlab Instance) account. To create an account, please follow the instructions in the [Salsa Documentation](https://wiki.debian.org/Salsa/Doc#Users).
 
+## Merge Request worklow explanined
+
 Proposed modifications to the Salsa CI's pipeline are done via merge requests. For that:
 
-1. Fork the project and clone the fork on your local machine. **_Your fork's visibility should be set to 'Public' for the pipeline to be shown on the merge request._** Committing directly to the upstream default branch is not allowed. To clone your project, we recommend you use the SSH option. You can find instructions about how to interact with Salsa via SSH at [https://salsa.debian.org/help/topics/authentication/index.md](https://salsa.debian.org/help/topics/authentication/index.md).
+1. Fork the project and clone the fork on your local machine. **_Your fork's visibility should be set to 'Public' for the pipeline to be shown on the merge request._** Committing directly to the upstream default branch is not allowed. To clone your project, we recommend you use the SSH option. You can find instructions about how to interact with Salsa via SSH at [salsa.debian.org/help/topics/authentication](https://salsa.debian.org/help/topics/authentication/index.md).
 
-1. After cloning, create a branch with a meaningful name. _(Your branch should be up to date with the upstream default branch.)_  For merge requests closing an issue, it is convenient to prefix the branch name with the issue's number. 
-**Note: _The branch name is used as a staging tag on the generated images. Because of this, slashes (`/`) are not allowed, otherwise, CI will fail. Avoid branch names like `something/other`._**
+1. After cloning, run [`git config --local commit.gpgsign true`](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work#_everyone_must_sign) to ensure all your commits in this project are automatically signed. Debian relies on OpenPGP to guarantee the authenticity and integrity of contributions and code submissions to Salsa-CI will not be accepted if unsigned.
 
-1. Make necessary changes and commit. **Please sign every commit.** Debian relies on OpenPGP to guarantee the authenticity and integrity of contributions. If you are wondering how to sign commits, read [this condensed summary](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work).
-**Note:** *YAML files follow a two-space indentation. Scripts in other languages should
-follow their language-wide coding style. To check for errors in your YAML files before pushing changes, you can make use of [yamllint](https://yamllint.readthedocs.io/en/stable/quickstart.html).*
+1. Branch off to the default branch to work on a meaningfully named branch (e.g. `git checkout -b 193-build-twice`). If you are fixing an issue, it is convenient to prefix the branch name with the issue number. **Slashes (`/`) are not allowed in the branch name, as the branch name is used as a staging tag on the generated images, which does not support slashes._**
+
+1. Make necessary changes and commit. Make sure your syntax is flawless, scripts follow their language-wide coding style, and that git commit message is polished. *Note: YAML files follow a two-space indentation. To check for errors in your YAML files use of [yamllint](https://manpages.debian.org/unstable/yamllint/yamllint.1.en.html).*
 
 1. If you are a new contributor, add your name and emails to the [CONTRIBUTORS](CONTRIBUTORS) list.
 
 1. Once you are satisfied with your changes, push them to your fork's remote repository and create a Merge Request against the upstream default branch.
+
+1. Remember to follow up on the Merge Request, verify that the CI passed, and respond to review feedback. If the code base evolves before your MR is merged, please occasionally rebase on latest upstream default branch to ensure.
 
 If your Merge Request needs testing not covered by the pipeline's CI, it is important to link the tests you have done in the MR description or comment section to speed up the review. There are different ways to test different scenarios. You can always ping fellow contributors to see how to carry out certain tests.
 
