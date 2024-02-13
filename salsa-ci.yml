@@ -69,6 +69,7 @@ variables:
   SALSA_CI_AUTOPKGTEST_ARGS:
     description: "debci_autopkgtest_args is set to this variable and used by autopkgtest"
     value: ''
+  SALSA_CI_AUTOPKGTEST_ALLOWED_EXIT_STATUS: "0,2,8"
   SALSA_CI_BLHC_ARGS: ''
   SALSA_CI_LINTIAN_SUPPRESS_TAGS: ""
   SALSA_CI_LINTIAN_FAIL_WARNING: ""
@@ -554,9 +555,13 @@ stages:
     - /etc/init.d/lxc start
     - chown -R 'debci:' ${WORKING_DIR}
     - export debci_autopkgtest_args="${SALSA_CI_AUTOPKGTEST_ARGS}"
-    # su's -P is required to have ownership over /dev/stderr, /dev/stdout and
-    # /dev/stdin, and then fix #256
-    - su -P debci -c "debci localtest $WORKING_DIR/*.changes --suite ${RELEASE} --logs-dir ${DEBCI_LOG_PATH}" || ( ret=$?; [ $ret -eq 8 ] || [ $ret -eq 2 ] )
+    - |
+      ret=0
+      # su's -P is required to have ownership over /dev/stderr, /dev/stdout and
+      # /dev/stdin, and then fix #256
+      su -P debci -c "debci localtest $WORKING_DIR/*.changes --suite ${RELEASE} --logs-dir ${DEBCI_LOG_PATH}" || ret=$?
+      case ",$SALSA_CI_AUTOPKGTEST_ALLOWED_EXIT_STATUS," in *",$ret,"*) exit 0;; esac
+      exit $ret
     - rm -vrf ${WORKING_DIR}/debci/binaries
   variables:
     GIT_STRATEGY: fetch
