@@ -63,7 +63,7 @@ variables:
     description: "Set to 1 to run one job per reprotest variation"
     value: 0
   SALSA_CI_REPROTEST_ENABLE_DIFFOSCOPE:
-    description: "Set this to 1 to produce an in-depth comparision of reprotest results"
+    description: "Set this to 1 to produce an in-depth comparison of reprotest results"
     value: 0
   SALSA_CI_AUTOPKGTEST_LXC: https://salsa.debian.org/salsa-ci-team/autopkgtest-lxc
   SALSA_CI_AUTOPKGTEST_ARGS:
