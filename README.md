@@ -617,7 +617,7 @@ include:
   - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/pipeline-jobs.yml
 
 variables:
-  SALSA_CI_REPROTEST_ARGS: --variations=-build_path
+  SALSA_CI_REPROTEST_ARGS: --vary=-build_path
 ```
 
 #### Breaking up the reprotest job into the different variations
