@@ -9,8 +9,6 @@
 # set. The extra_repository and extra_repository_key variables are filenames.
 # The optional target-etc argument allows setting a different destination path
 # to be able to update chroots.
-# Passing the update flag will cause the script to call apt-get update at the
-# end if the file was added.
 
 SALSA_CI_EXTRA_REPOSITORY=""
 SALSA_CI_EXTRA_REPOSITORY_KEY=""
