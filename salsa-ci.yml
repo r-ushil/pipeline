@@ -98,7 +98,7 @@ variables:
   SALSA_CI_DISABLE_MISSING_BREAKS: 1
   SALSA_CI_DISABLE_RC_BUGS: 1
   SALSA_CI_IGNORED_BRANCHES: ''
-  SALSA_CI_BUILD_TIMEOUT_ARGS: "2.75h"
+  SALSA_CI_BUILD_TIMEOUT_ARGS: "-v 2.75h"
   SALSA_CI_DISABLE_BUILD_DBGSYM: 1
   # Use fastzip to fix https://salsa.debian.org/salsa-ci-team/pipeline/-/issues/177
   FF_USE_FASTZIP: 'true'
