@@ -270,8 +270,20 @@ can be used to add an extra repository (with its corresponding signing key)
 in deb822-style format (which is conveniently rendered by the aptly job).
 These variables are of
 [type file](https://salsa.debian.org/help/ci/variables/index.md#cicd-variable-types),
-which eases the multiline handling, but have the disadvantage that they can't
-be set on the salsa-ci.yml file.
+which eases the multiline handling, but have the disadvantage that their content can't
+be set on the salsa-ci.yml file - but they can be added to the repository as files and
+have their filenames then set in the salsa-ci.yml file:
+
+```yaml
+---
+include: https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/salsa-ci.yml
+
+variables:
+  SALSA_CI_EXTRA_REPOSITORY: debian/ci/extra_repository.list
+  SALSA_CI_EXTRA_REPOSITORY_KEY: debian/ci/extra_repository.asc
+  # or
+  SALSA_CI_EXTRA_REPOSITORY_SOURCES: debian/ci/extra_repository.sources
+```
 
 See also
 [Using automatically built apt repository](#using-automatically-built-apt-repository)
