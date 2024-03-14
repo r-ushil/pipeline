@@ -100,6 +100,8 @@ variables:
   SALSA_CI_IGNORED_BRANCHES: ''
   SALSA_CI_BUILD_TIMEOUT_ARGS: "-v 2.75h"
   SALSA_CI_DISABLE_BUILD_DBGSYM: 1
+  SALSA_CI_DISABLE_WRAP_AND_SORT: 1
+  SALSA_CI_WRAP_AND_SORT_ARGS: ''
   # Use fastzip to fix https://salsa.debian.org/salsa-ci-team/pipeline/-/issues/177
   FF_USE_FASTZIP: 'true'
   SALSA_CI_DISABLE_GBP_SETUP_GITATTRIBUTES: 0
@@ -765,6 +767,27 @@ stages:
     GIT_STRATEGY: none
   needs:
     - job: build
+      artifacts: true
+
+.test-wrap-and-sort: &test-wrap-and-sort
+  stage: test
+  image: $SALSA_CI_IMAGES_GENERIC_TESTS
+  rules:
+    - if: $SALSA_CI_ENABLE_WRAP_AND_SORT =~ /^(1|yes|true)$/
+    - if: $SALSA_CI_DISABLE_ALL_TESTS =~ /^(1|yes|true)$/
+      when: never
+    - if: $SALSA_CI_DISABLE_WRAP_AND_SORT !~ /^(1|yes|true)$/
+  script:
+    - eatmydata apt-get install --no-install-recommends -y devscripts
+    - cd ${WORKING_DIR}
+    - mkdir -v wrap-and-sort
+    - cp -av ${SOURCE_DIR}/debian wrap-and-sort/
+    - (cd wrap-and-sort && wrap-and-sort ${SALSA_CI_WRAP_AND_SORT_ARGS})
+    - diff -ur ${SOURCE_DIR}/debian/ wrap-and-sort/debian/
+  variables:
+    GIT_STRATEGY: none
+  needs:
+    - job: extract-source
       artifacts: true
 
 .publish-aptly: &publish-aptly

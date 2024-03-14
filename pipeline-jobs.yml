@@ -62,6 +62,9 @@ missing-breaks:
 rc-bugs:
   extends: .test-rc-bugs
 
+wrap-and-sort:
+  extends: .test-wrap-and-sort
+
 aptly:
   extends: .publish-aptly
 
