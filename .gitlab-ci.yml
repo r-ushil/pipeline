@@ -147,8 +147,8 @@ test-pipeline:
         BUILD_PROFILES:
           - nocheck,nodoc
       # boxes is used to test gbp setup-gitattributes (#322)
-      - PROJECT_URL: https://salsa.debian.org/carnil/boxes
-        SALSA_CI_DISABLE_GBP_SETUP_GITATTRIBUTES: 1
+      #- PROJECT_URL: https://salsa.debian.org/otto/boxes
+      #  SALSA_CI_DISABLE_GBP_SETUP_GITATTRIBUTES: 1
 
 
 clean images:
