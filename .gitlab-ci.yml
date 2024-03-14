@@ -91,7 +91,8 @@ check gpg signature:
     # Try OpenPGP first and if key was not found, try the Ubuntu keyserver.
     # Defining the keyserver for OpenPGP is done to be explicit, but it not
     # strictly necessary as is it is the default keyserver in GnuPG anyway
-    - gpg --verbose --keyserver hkps://keys.openpgp.org:443 --recv-key $SIGNING_KEY || \
+    - |
+      gpg --verbose --keyserver hkps://keys.openpgp.org:443 --recv-key $SIGNING_KEY || \
       gpg --verbose --keyserver hkps://keyserver.ubuntu.com:443 --recv-key $SIGNING_KEY
     - GIT_TRACE2=true git verify-commit HEAD --raw --verbose || (echo "please sign your commit" && exit 1)
   rules:
