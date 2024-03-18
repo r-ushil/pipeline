@@ -272,7 +272,9 @@ stages:
   - rm -vrf ${CCACHE_TMP_DIR}
 
   - mv -v ${CCACHE_WORK_DIR} ${CCACHE_TMP_DIR}
-  - add_extra_repository.sh -v -e "${SALSA_CI_EXTRA_REPOSITORY}" -k "${SALSA_CI_EXTRA_REPOSITORY_KEY}"
+  - add_extra_repository.sh -v
+    -e "${SALSA_CI_EXTRA_REPOSITORY}" -k "${SALSA_CI_EXTRA_REPOSITORY_KEY}"
+    -s "${SALSA_CI_EXTRA_REPOSITORY_SOURCES}"
 
 .build-script: &build-script
   - export CCACHE_DIR=${CCACHE_TMP_DIR}
@@ -586,6 +588,7 @@ stages:
       lxc.lxcpath=${SCI_LXC_PATH}
       EOT
     - add_extra_repository.sh -v -e "${SALSA_CI_EXTRA_REPOSITORY}" -k "${SALSA_CI_EXTRA_REPOSITORY_KEY}"
+      -s "${SALSA_CI_EXTRA_REPOSITORY_SOURCES}"
       -t "${SCI_LXC_PATH}/autopkgtest-${RELEASE}-${LOCAL_ARCH}/rootfs/etc"
     - umount -R /sys/fs/cgroup && mount -a
     - /etc/init.d/lxc-net start
@@ -687,7 +690,9 @@ stages:
       - $WORKING_DIR/reprotest.log
     when: always
   script:
-    - add_extra_repository.sh -v -e "${SALSA_CI_EXTRA_REPOSITORY}" -k "${SALSA_CI_EXTRA_REPOSITORY_KEY}"
+    - add_extra_repository.sh -v
+      -e "${SALSA_CI_EXTRA_REPOSITORY}" -k "${SALSA_CI_EXTRA_REPOSITORY_KEY}"
+      -s "${SALSA_CI_EXTRA_REPOSITORY_SOURCES}"
     - apt-get update && eatmydata apt-get upgrade -y
     - eatmydata apt-get build-dep -y ${WORKING_DIR}/*.dsc
     - |
@@ -743,8 +748,10 @@ stages:
     - cp -aTLv /var/lib/local-apt-repository/ ${CHROOT_PATH}/var/lib/local-apt-repository/
     - test -n "${SALSA_CI_PIUPARTS_PRE_INSTALL_SCRIPT}" && cp -aTLv "${SALSA_CI_PIUPARTS_PRE_INSTALL_SCRIPT}" /etc/piuparts/scripts/pre_install_salsa_ci && chmod 755 /etc/piuparts/scripts/pre_install_salsa_ci
     - test -n "${SALSA_CI_PIUPARTS_POST_INSTALL_SCRIPT}" && cp -aTLv "${SALSA_CI_PIUPARTS_POST_INSTALL_SCRIPT}" /etc/piuparts/scripts/post_install_salsa_ci && chmod 755 /etc/piuparts/scripts/post_install_salsa_ci
-    - add_extra_repository.sh -v -e "${SALSA_CI_EXTRA_REPOSITORY}"
-      -k "${SALSA_CI_EXTRA_REPOSITORY_KEY}" -t "${CHROOT_PATH}/etc-target"
+    - add_extra_repository.sh -v
+      -e "${SALSA_CI_EXTRA_REPOSITORY}" -k "${SALSA_CI_EXTRA_REPOSITORY_KEY}"
+      -s "${SALSA_CI_EXTRA_REPOSITORY_SOURCES}"
+      -t "${CHROOT_PATH}/etc-target"
     - sed  '/127.0.0.1/s/localhost/pipeline.salsa.debian.org localhost/' /etc/hosts > ${CHROOT_PATH}/etc/hosts
     - PIUPARTS_DISTRIBUTION_ARG="--distribution $RELEASE"
     - |

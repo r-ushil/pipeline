@@ -93,6 +93,8 @@ The following releases are currently supported:
 * buster-backports
 * bullseye
 * bullseye-backports
+* bookworm
+* bookworm-backports
 * stable
 * testing
 * unstable
@@ -262,10 +264,29 @@ See also https://salsa.debian.org/help/ci/pipelines/index.md#skip-a-pipeline
 The variables `SALSA_CI_EXTRA_REPOSITORY` and `SALSA_CI_EXTRA_REPOSITORY_KEY` can be
 used to add private apt repositories to the sources.list, to be
 used by the build and tests, and (optionally) the signing key for the
-repositories in armor format. These variables are of
+repositories in armor format.
+Alternatively, the single variable `SALSA_CI_EXTRA_REPOSITORY_SOURCES`
+can be used to add an extra repository (with its corresponding signing key)
+in deb822-style format (which is conveniently rendered by the aptly job).
+These variables are of
 [type file](https://salsa.debian.org/help/ci/variables/index.md#cicd-variable-types),
-which eases the multiline handling, but have the disadvantage that they can't
-be set on the salsa-ci.yml file.
+which eases the multiline handling, but have the disadvantage that their content can't
+be set on the salsa-ci.yml file - but they can be added to the repository as files and
+have their filenames then set in the salsa-ci.yml file:
+
+```yaml
+---
+include: https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/salsa-ci.yml
+
+variables:
+  SALSA_CI_EXTRA_REPOSITORY: debian/ci/extra_repository.list
+  SALSA_CI_EXTRA_REPOSITORY_KEY: debian/ci/extra_repository.asc
+  # or
+  SALSA_CI_EXTRA_REPOSITORY_SOURCES: debian/ci/extra_repository.sources
+```
+
+See also
+[Using automatically built apt repository](#using-automatically-built-apt-repository)
 
 ### Setting variables on pipeline creation
 
@@ -596,6 +617,9 @@ before_script:
 
 Replace `{TEAM}`, `${PROJECT}` with appropriate `team` and `project` name respectively and `${JOB_ID}` with the aptly job number of `src:pkgA` pipeline. Now you can use the binary packages produced by `src:pkgA` in `src:pkgB`. \
 **Note:** When you make changes to `src:pkgA`, `src:pkgB` will continue using the old repository that the job number points to. If you want `src:pkgB` to use the updated binary packages, you have to retrieve the job number of the `aptly` job from `src:pkgA` and update the `${JOB_ID}` of `src:pkgB`.
+
+See also
+[Adding your private repositories to the builds](#adding-your-private-repositories-to-the-builds)
 
 ### Debian release bump
 By default, the build job will increase the release number using the +salsaci suffix.
